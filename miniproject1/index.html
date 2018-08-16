@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="css/styles.css">
+  </head>
+  <body>
+    <section>
+      <h1>Filter fun</h1>
+      <canvas id="canvas" width="300" height="300"></canvas>
+      <h2>Load Images</h2>
+      <input  type="file"
+              multiple = "false"
+              accept = "image/*"
+              name=""
+              value="Choose File"
+              onchange="filters.loadImage(event);"/>
+      <h2>Choose Filter</h2>
+      <button type="button" name="button" onclick="filters.grayscale();">Grayscale</button>
+      <button type="button" name="button">Red</button>
+      <button type="button" name="button">Clear</button>
+      <button type="button" name="button" onclick="filters.reset();">Reset</button>
+    </section>
+    <script type="text/javascript" src="js/filters.js">
+
+    </script>
+  </body>
+</html>
