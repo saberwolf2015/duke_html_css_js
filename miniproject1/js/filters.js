@@ -75,6 +75,31 @@
         //context.putImageData(filters.sourceImage, x, y);
         context.putImageData(newImage,x,y);
     };
+    filters.red = function() {
+      var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
+      var pix = newImage.data;
+      for (var i = 0, n = pix.length; i < n; i += 4) {
+        var r = pix[i];
+        var g = pix[i+1];
+        var b = pix[i+2];
+        var avg = (pix[i  ] + pix[i+1] + pix[i+2])/3;
+        if(avg < 127) {
+          pix[i] = avg*2;
+          pix[i+1] = 0;
+          pix[i+2] = 0;
+        } else {
+          pix[i] = 255;
+          pix[i+1] = avg*2-255;
+          pix[i+2] = avg*2-255;
+        }
+      }
+      var context = document.getElementById('canvas').getContext('2d');
+      // Draw the ImageData at the given (x,y) coordinates.
+      var x = 0;
+      var y = 0;
+      //context.putImageData(filters.sourceImage, x, y);
+      context.putImageData(newImage,x,y);
+    }
     filters.reset = function() {
       var context = document.getElementById('canvas').getContext('2d');
       var x = 0;
