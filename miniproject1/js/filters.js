@@ -1,8 +1,98 @@
 (
   function(window) {
+
     var filters = {
       sourceImage : null,
     };
+
+    function HSVtoRGB(h, s, v) {
+        var r, g, b, i, f, p, q, t;
+        if (arguments.length === 1) {
+            s = h.s, v = h.v, h = h.h;
+        }
+        i = Math.floor(h * 6);
+        f = h * 6 - i;
+        p = v * (1 - s);
+        q = v * (1 - f * s);
+        t = v * (1 - (1 - f) * s);
+        switch (i % 6) {
+            case 0: r = v, g = t, b = p; break;
+            case 1: r = q, g = v, b = p; break;
+            case 2: r = p, g = v, b = t; break;
+            case 3: r = p, g = q, b = v; break;
+            case 4: r = t, g = p, b = v; break;
+            case 5: r = v, g = p, b = q; break;
+        }
+        return {
+            r: Math.round(r * 255),
+            g: Math.round(g * 255),
+            b: Math.round(b * 255)
+        };
+    }
+
+    // function rainbow(p) {
+    //     var rgb = HSVtoRGB(p/100.0*0.85, 1.0, 1.0);
+    //     return 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
+    // }
+
+    // for(var i=0; i<100; i++) {
+    //     var span = document.createElement('span');
+    //     span.style.backgroundColor = span.style.color = rainbow(i);
+    //     span.textContent = 'i';
+    //     document.body.appendChild(span);
+    // }
+    filters.rainbow = function() {
+      var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
+      var pix = newImage.data;
+      var width = newImage.width;
+      var height = newImage.height;
+
+      var step = height/100;
+      var colors = [];
+      for(var i = 0; i< 100; i++) {
+        var rgb = HSVtoRGB(i/100.0*0.85, 1.0, 1.0);
+        colors.push(rgb);
+      }
+      console.log("colors",colors);
+      console.log("step",step);
+      var rowNum = 0;
+      for (var i = 0, n = pix.length; i < n; i += 4) {
+        if(i/4 % width == 0) rowNum++;
+
+        var pos = Math.round(rowNum /step);
+        if(pos >= colors.length) pos = colors.length-1;
+        //console.log("pos", pos, "rowNum", rowNum, " step", step);
+        //console.log(" color ", colors[pos].r,colors[pos].g,colors[pos].b);
+        var avg = (pix[i  ] + pix[i+1] + pix[i+2])/3;
+        if(avg < 127)  {
+          
+        } else {
+          pix[i] = colors[pos].r;
+          pix[i+1] = colors[pos].g;
+          pix[i+2] = colors[pos].b;
+        }
+
+        // var r = pix[i];
+        // var g = pix[i+1];
+        // var b = pix[i+2];
+        // var avg = (pix[i  ] + pix[i+1] + pix[i+2])/3;
+        // if(avg < 127) {
+        //   pix[i] = avg*2;
+        //   pix[i+1] = 0;
+        //   pix[i+2] = 0;
+        // } else {
+        //   pix[i] = 255;
+        //   pix[i+1] = avg*2-255;
+        //   pix[i+2] = avg*2-255;
+        // }
+      }
+      var context = document.getElementById('canvas').getContext('2d');
+      // Draw the ImageData at the given (x,y) coordinates.
+      var x = 0;
+      var y = 0;
+      //context.putImageData(filters.sourceImage, x, y);
+      context.putImageData(newImage,x,y);
+    }
 
 
     filters.loadImage = function(e) {
@@ -76,6 +166,32 @@
         context.putImageData(newImage,x,y);
     };
     filters.red = function() {
+      var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
+      var pix = newImage.data;
+      for (var i = 0, n = pix.length; i < n; i += 4) {
+        var r = pix[i];
+        var g = pix[i+1];
+        var b = pix[i+2];
+        var avg = (pix[i  ] + pix[i+1] + pix[i+2])/3;
+        if(avg < 127) {
+          pix[i] = avg*2;
+          pix[i+1] = 0;
+          pix[i+2] = 0;
+        } else {
+          pix[i] = 255;
+          pix[i+1] = avg*2-255;
+          pix[i+2] = avg*2-255;
+        }
+      }
+      var context = document.getElementById('canvas').getContext('2d');
+      // Draw the ImageData at the given (x,y) coordinates.
+      var x = 0;
+      var y = 0;
+      //context.putImageData(filters.sourceImage, x, y);
+      context.putImageData(newImage,x,y);
+    }
+    //ДОДЕЛАТЬ ЭТОТ ФИЛЬТР
+    filters.windowPane = function(wCount, hCount, width) {
       var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
       var pix = newImage.data;
       for (var i = 0, n = pix.length; i < n; i += 4) {
