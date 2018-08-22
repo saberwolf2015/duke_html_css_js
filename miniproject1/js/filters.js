@@ -205,20 +205,47 @@
       var offset2 = 0;
       var wSpace = Math.round((w-lineWidth*(wCount-2))/(wCount-1));
       console.log(" w ", w, " lineWidth ", lineWidth, " wCount ", wCount, " wSpace", wSpace);
-      for(var k = 0; k < h; k++) {
-      var offset = 0;
-      for(var i = 0; i < wCount; i++) {
-        console.log(" offset " , offset);
-        for(var j = 0; j < lineWidth*4; j+=4) {
-          //console.log(offset*4+j);
-          pix[offset2+offset*4+j] = 255;
-          pix[offset2+offset*4+j+1] = 0;
-          pix[offset2+offset*4+j+2] = 0;
+      //вертикальные линии
+      // for(var k = 0; k < h; k++) {
+      //   var offset = 0;
+      //   for(var i = 0; i < wCount; i++) {
+      //     console.log(" offset " , offset);
+      //     for(var j = 0; j < lineWidth*4; j+=4) {
+      //       //console.log(offset*4+j);
+      //       pix[offset2+offset*4+j] = 255;
+      //       pix[offset2+offset*4+j+1] = 0;
+      //       pix[offset2+offset*4+j+2] = 0;
+      //     }
+      //     offset+=wSpace;
+      //   }
+      //   offset2+=w*4;
+      // }
+
+      //горизонтальные линии
+      var offset2 = 0;
+      var hSpace = ((w-lineWidth*(hCount-2))/(hCount-1));
+      console.log(" w ", w, " lineWidth ", lineWidth, " hCount ", hCount, " hSpace", hSpace);
+      //for(var k = 0; k < h; k++) {
+        var offset = 0;
+        for(var i = 0; i < hCount; i++) {
+          console.log(" offset " , offset);
+          for(var j = 0; j < w*lineWidth*4; j+=4) {
+            //console.log(offset*4+j);
+            pix[offset*4+j] = 0;
+            pix[offset*4+j+1] = 0;
+            pix[offset*4+j+2] = 0;
+            if(i == 0) {
+              pix[offset*4+j] = 255;
+            } else if(i == 1) {
+              pix[offset*4+j+1] = 255;
+            } else {
+              pix[offset*4+j+2] = 255;
+            }
+          }
+          offset+=w*(lineWidth) + w*hSpace;
         }
-        offset+=wSpace;
-      }
-      offset2+=w*4;
-      }
+        //offset2+=w*4;
+      //}
       //
       // var rowNum = 0;
       // var w_space = w/wCount;
