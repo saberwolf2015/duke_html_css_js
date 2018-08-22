@@ -65,7 +65,7 @@
         //console.log(" color ", colors[pos].r,colors[pos].g,colors[pos].b);
         var avg = (pix[i  ] + pix[i+1] + pix[i+2])/3;
         if(avg < 127)  {
-          
+
         } else {
           pix[i] = colors[pos].r;
           pix[i+1] = colors[pos].g;
@@ -191,24 +191,66 @@
       context.putImageData(newImage,x,y);
     }
     //ДОДЕЛАТЬ ЭТОТ ФИЛЬТР
-    filters.windowPane = function(wCount, hCount, width) {
+    /**
+     * wCount - сколько линий по ширине
+     * hCount - сколько линий по высоте
+     * lineWidth - ширина линии
+     */
+    filters.windowPane = function(wCount, hCount, lineWidth) {
       var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
       var pix = newImage.data;
-      for (var i = 0, n = pix.length; i < n; i += 4) {
-        var r = pix[i];
-        var g = pix[i+1];
-        var b = pix[i+2];
-        var avg = (pix[i  ] + pix[i+1] + pix[i+2])/3;
-        if(avg < 127) {
-          pix[i] = avg*2;
-          pix[i+1] = 0;
-          pix[i+2] = 0;
-        } else {
-          pix[i] = 255;
-          pix[i+1] = avg*2-255;
-          pix[i+2] = avg*2-255;
+      var w = newImage.width;
+      var h = newImage.height;
+
+      var offset2 = 0;
+      var wSpace = Math.round((w-lineWidth*(wCount-2))/(wCount-1));
+      console.log(" w ", w, " lineWidth ", lineWidth, " wCount ", wCount, " wSpace", wSpace);
+      for(var k = 0; k < h; k++) {
+      var offset = 0;
+      for(var i = 0; i < wCount; i++) {
+        console.log(" offset " , offset);
+        for(var j = 0; j < lineWidth*4; j+=4) {
+          //console.log(offset*4+j);
+          pix[offset2+offset*4+j] = 255;
+          pix[offset2+offset*4+j+1] = 0;
+          pix[offset2+offset*4+j+2] = 0;
         }
+        offset+=wSpace;
       }
+      offset2+=w*4;
+      }
+      //
+      // var rowNum = 0;
+      // var w_space = w/wCount;
+      // var h_space = h/hCount;
+      // console.log("w_space",w_space,"h_space",h_space);
+      // for (var i = 0, n = pix.length; i < n; i += 4) {
+      //   if(i/4 % w == 0) rowNum++;
+      //   //console.log("rowNum",rowNum);
+      //   if(i/4 % w_space == 0) {
+      //     pix[i] = 0;
+      //     pix[i+1] = 0;
+      //     pix[i+2] = 0;
+      //   }
+      //   if(rowNum % h_space == 0) {
+      //     pix[i] = 0;
+      //     pix[i+1] = 0;
+      //     pix[i+2] = 0;
+      //   }
+      //   // var r = pix[i];
+      //   // var g = pix[i+1];
+      //   // var b = pix[i+2];
+      //   // var avg = (pix[i  ] + pix[i+1] + pix[i+2])/3;
+      //   // if(avg < 127) {
+      //   //   pix[i] = avg*2;
+      //   //   pix[i+1] = 0;
+      //   //   pix[i+2] = 0;
+      //   // } else {
+      //   //   pix[i] = 255;
+      //   //   pix[i+1] = avg*2-255;
+      //   //   pix[i+2] = avg*2-255;
+      //   // }
+      // }
       var context = document.getElementById('canvas').getContext('2d');
       // Draw the ImageData at the given (x,y) coordinates.
       var x = 0;
