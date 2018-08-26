@@ -15,6 +15,7 @@
     var pane_w_count = document.querySelector("#pane_w_count");
     var pane_h_count = document.querySelector("#pane_h_count");
     var pane_border = document.querySelector("#pane_border");
+    var pane_color = document.querySelector("#pane_color");
     btn_file.onchange = function(event) {
       loadImage(event);
     };
@@ -37,12 +38,13 @@
     btn_window_pane.onclick = function () {
       console.log("pane_w_count.value", pane_w_count.value);
       console.log("pane_h_count.value", pane_h_count.value);
-      console.log("pane_border.value", pane_border.value)
+      console.log("pane_border.value", pane_border.value);
+      console.log("pane_color.value", pane_color.value);
       // pane_w_count.value;
       // pane_h_count.value;
       // pane_border.value;
       //filters.windowPane(3,3,5);
-      filters.windowPane(pane_w_count.value,pane_h_count.value,pane_border.value);
+      filters.windowPane(pane_w_count.value,pane_h_count.value,pane_border.value,pane_color.value);
     }
     btn_shark.onclick = function () {
       filters.shark();

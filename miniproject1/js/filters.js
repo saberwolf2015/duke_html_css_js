@@ -242,8 +242,9 @@
      * hCount - сколько линий по высоте
      * lineWidth - ширина линии
      */
-    filters.windowPane = function(wCount, hCount, lineWidth) {
+    filters.windowPane = function(wCount, hCount, lineWidth, hexColor) {
       console.log("windowPane(wCount = " + wCount + ", hCount= " + hCount + ", lineWidth = " + lineWidth +")");
+      color = filters.fromHexToRgb(hexColor);
       wCount = parseInt(wCount);
       hCount = parseInt(hCount);
       lineWidth = parseInt(lineWidth);
@@ -267,9 +268,9 @@
           //рисуем части горизонтальных полос
           for(var j = 0; j < lineWidth*4; j+=4) {
             //console.log(offset*4+j);
-            pix[offset2+offset*4+j] = 255;
-            pix[offset2+offset*4+j+1] = 0;
-            pix[offset2+offset*4+j+2] = 0;
+            pix[offset2+offset*4+j] = color.r;//255;
+            pix[offset2+offset*4+j+1] = color.g;//0;
+            pix[offset2+offset*4+j+2] = color.b;//0;
           }
           //offset+=wSpace;
           offset+=(lineWidth+wSpace);
@@ -290,16 +291,16 @@
           //рисуем горизонтальые линии по заданной ширине
           for(var j = 0; j < w*lineWidth*4; j+=4) {
             //console.log(offset*4+j);
-            pix[offset*w*4+j] = 0;
-            pix[offset*w*4+j+1] = 0;
-            pix[offset*w*4+j+2] = 0;
-            if(i == 0) {
-              pix[offset*w*4+j] = 255;
-            } else if(i == 1) {
-              pix[offset*w*4+j+1] = 255;
-            } else {
-              pix[offset*w*4+j+2] = 255;
-            }
+            pix[offset*w*4+j] = color.r;
+            pix[offset*w*4+j+1] = color.g;
+            pix[offset*w*4+j+2] = color.b;
+            // if(i == 0) {
+            //   pix[offset*w*4+j] = 255;
+            // } else if(i == 1) {
+            //   pix[offset*w*4+j+1] = 255;
+            // } else {
+            //   pix[offset*w*4+j+2] = 255;
+            // }
           }
           //после делаем смещение
           offset+=(lineWidth+hSpace);
@@ -319,6 +320,20 @@
       var y = 0;
       context.putImageData(filters.sourceImage, x, y);
     }
+    filters.fromHexToRgb = function(hexColor) {
+      var arr = hexColor.match(/[A-Za-z0-9]{2}/g).map(function(v) { return parseInt(v, 16) });
+      var ret = {
+        r: 0,
+        g: 0,
+        b: 0
+      };
+      if(arr.length >= 3) {
+        ret.r = arr[0];
+        ret.g = arr[1];
+        ret.b = arr[2];
+      }
+      return ret;
+    };
     window.filters = filters;
   }
 )(window);
