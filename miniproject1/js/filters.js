@@ -44,6 +44,9 @@
     //     document.body.appendChild(span);
     // }
     filters.rainbow = function() {
+      if(filters.sourceImage == null) {
+        return;
+      }
       var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
       var pix = newImage.data;
       var width = newImage.width;
@@ -109,21 +112,13 @@
           var imgd = context.getImageData(x, y, width, height);
           var pix = imgd.data;
           filters.sourceImage = imgd;
-          // // Loop over each pixel and invert the color.
-          // for (var i = 0, n = pix.length; i < n; i += 4) {
-          //     pix[i  ] = 255 - pix[i  ]; // red
-          //     pix[i+1] = 255 - pix[i+1]; // green
-          //     pix[i+2] = 255 - pix[i+2]; // blue
-          //     // i+3 is alpha (the fourth element)
-          // }
-
-          // Draw the ImageData at the given (x,y) coordinates.
-          //context.putImageData(imgd, x, y);
-
       }
       img.src = URL.createObjectURL(e.target.files[0]);
     };
     filters.grayscale = function() {
+      if(filters.sourceImage == null) {
+        return;
+      }
       console.log(filters.sourceImage);
         //var newImage = Object.assign({}, filters.sourceImage);
         //var newImage = JSON.parse(JSON.stringify(filters.sourceImage));
@@ -158,6 +153,9 @@
         context.putImageData(newImage,x,y);
     };
     filters.shark = function() {
+      if(filters.sourceImage == null) {
+        return;
+      }
       console.log(filters.sourceImage);
         //var newImage = Object.assign({}, filters.sourceImage);
         //var newImage = JSON.parse(JSON.stringify(filters.sourceImage));
@@ -177,7 +175,7 @@
         //столько пи в ширине картинки
         var piCount = w/Math.PI;
         console.log("piCount", piCount);
-        var period = 5;//3;
+        var period = 5;//5;//3;
         if(piCount > period) sine_w = 1/(piCount/period);
 
         console.log("sine_w ", sine_w);
@@ -248,6 +246,9 @@
         context.putImageData(newImage,x,y);
     };
     filters.red = function() {
+      if(filters.sourceImage == null) {
+        return;
+      }
       var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
       var pix = newImage.data;
       for (var i = 0, n = pix.length; i < n; i += 4) {
@@ -279,6 +280,9 @@
      * lineWidth - ширина линии
      */
     filters.windowPane = function(wCount, hCount, lineWidth) {
+      if(filters.sourceImage == null) {
+        return;
+      }
       var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
       var pix = newImage.data;
       var w = newImage.width;
@@ -292,7 +296,7 @@
         var offset = 0;
         //берём линию по ширине
         for(var i = 0; i < wCount; i++) {
-          console.log(" offset " , offset);
+          //console.log(" offset " , offset);
           //рисуем части горизонтальных полос
           for(var j = 0; j < lineWidth*4; j+=4) {
             //console.log(offset*4+j);
@@ -315,7 +319,7 @@
         var offset = 0;
         //по всей высоте
         for(var i = 0; i < hCount; i++) {
-          console.log(" offset " , offset, " i " , i);
+          //console.log(" offset " , offset, " i " , i);
           //рисуем горизонтальые линии по заданной ширине
           for(var j = 0; j < w*lineWidth*4; j+=4) {
             //console.log(offset*4+j);
@@ -332,7 +336,7 @@
           }
           //после делаем смещение
           offset+=(lineWidth+hSpace);
-          console.log("offset = ",offset, " " , (lineWidth+hSpace));
+          //console.log("offset = ",offset, " " , (lineWidth+hSpace));
         }
 
       var context = document.getElementById('canvas').getContext('2d');

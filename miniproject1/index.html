@@ -17,16 +17,15 @@
               value="Choose File"
               onchange="filters.loadImage(event);"/>
       <h2>Choose Filter</h2>
-      <button type="button" name="button" onclick="filters.grayscale();">Grayscale</button>
-      <button type="button" name="button" onclick="filters.red();">Red</button>
-      <button type="button" name="button">Clear</button>
-      <button type="button" name="button" onclick="filters.rainbow();">Rainbow</button>
-      <button type="button" name="button" onclick="filters.reset();">Reset</button>
-      <button type="button" name="button" onclick="filters.windowPane(3,3,5);">Window Pane</button>
-      <button type="button" name="button" onclick="filters.shark();">Shark</button>
+      <button id="btn_gray" type="button" name="button">Grayscale</button>
+      <button id="btn_red" type="button" name="button">Red</button>
+      <button id="btn_clear" type="button" name="button">Clear</button>
+      <button id="btn_rainbow" type="button" name="button">Rainbow</button>
+      <button id="btn_reset" type="button" name="button">Reset</button>
+      <button id="btn_window_pane" type="button" name="button">Window Pane</button>
+      <button id="btn_shark" type="button" name="button">Shark</button>
     </section>
-    <script type="text/javascript" src="js/filters.js">
-
-    </script>
+    <script type="text/javascript" src="js/filters.js"></script>
+    <script type="text/javascript" src="js/init.js"></script>
   </body>
 </html>
