@@ -128,21 +128,11 @@
       if(filters.sourceImage == null) {
         return;
       }
-      console.log(filters.sourceImage);
         var newImage = new ImageData(filters.sourceImage.width, filters.sourceImage.height);
-        console.log(newImage);
         newImage.data.set(new Uint8ClampedArray(filters.sourceImage.data));
-        console.log(newImage);
-        //var pix = filters.sourceImage.data;
         var pix = newImage.data;
         var w = newImage.width;
         var h = newImage.height;
-        var border = shark_teeth_gum;//Math.round(h*0.05);//как минимум 5 процентов по краю
-        console.log("border ", border);
-        //var sine_h = Math.round(h*0.10);//высота синусоиды
-        //var sine_h = Math.round((h-border*2)*shark_teeth_height/100);
-        //console.log("sine_h ", sine_h);
-        //var sine_w = Math.round(w/4);//ширина синусоиды
         var sine_w = Math.round(w/shark_teeth);
 
         //период синусоиды 2ПИ
@@ -177,14 +167,12 @@
             pix[i+2] = 255;
           }
 
-          if(rowNum < border || rowNum > h-border) {
+          if(rowNum < shark_teeth_gum || rowNum > h-shark_teeth_gum) {
             pix[i  ] = 0; // red
             pix[i+1] = 191; // green
             pix[i+2] = 255; // blue
           } else {
-              //this good
               //top sinusoid
-              //var y = sine_h*2+  sine_h*Math.sin(sine_w*x);
               var y = shark_teeth_height+ shark_teeth_gum+ shark_teeth_height*Math.sin(sine_w*x);
 
               //console.log("x ", x, " y" , y, " rowNum", rowNum);
@@ -194,7 +182,6 @@
                 pix[i+2] = 255; // blue
               }
               //bottom sinusoid
-              //y = (h-sine_h*2-border) + sine_h*Math.sin(sine_w*x);
               y = h - shark_teeth_height- shark_teeth_gum + shark_teeth_height*Math.sin(sine_w*x);
               //console.log("x ", x, " y" , y, " rowNum", rowNum);
               if(rowNum > y) {
@@ -204,23 +191,11 @@
               }
           }
           x++;
-          // var r = pix[i];
-          // var g = pix[i+1];
-          // var b = pix[i+2];
-          //
-          // var avg = (pix[i  ] + pix[i+1] + pix[i+2])/3;
-          // if(i < 50) {
-          // console.log("["+i+"] ("+r+","+g+","+b+") avg = " + avg);
-          // }
-          // pix[i  ] = avg; // red
-          // pix[i+1] = avg; // green
-          // pix[i+2] = avg; // blue
         }
         var context = document.getElementById('canvas').getContext('2d');
         // Draw the ImageData at the given (x,y) coordinates.
         var x = 0;
         var y = 0;
-        //context.putImageData(filters.sourceImage, x, y);
         context.putImageData(newImage,x,y);
     };
     filters.red = function() {
