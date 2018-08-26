@@ -32,17 +32,6 @@
         };
     }
 
-    // function rainbow(p) {
-    //     var rgb = HSVtoRGB(p/100.0*0.85, 1.0, 1.0);
-    //     return 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
-    // }
-
-    // for(var i=0; i<100; i++) {
-    //     var span = document.createElement('span');
-    //     span.style.backgroundColor = span.style.color = rainbow(i);
-    //     span.textContent = 'i';
-    //     document.body.appendChild(span);
-    // }
     filters.rainbow = function() {
       if(filters.sourceImage == null) {
         return;
@@ -89,32 +78,6 @@
       context.putImageData(newImage,x,y);
     }
 
-
-    // filters.loadImage = function(e) {
-    //   console.log("Load Image");
-    //   var context = document.getElementById('canvas').getContext('2d');
-    //   //var img = new Image();
-    //   var img = document.createElement('img');
-    //   img.onload = function() {
-    //       var canvas = document.getElementById('canvas');
-    //       canvas.width  = img.width;
-    //       canvas.height = img.height;
-    //       // canvas.style.width  = '800px';
-    //       // canvas.style.height = '600px';
-    //
-    //       context.drawImage(img, 0,0);
-    //       console.log("w: ",img.width,"h:", img.height);
-    //       //alert('the image is drawn');
-    //       var x = 0;
-    //       var y = 0;
-    //       var width = img.width;
-    //       var height = img.height;
-    //       var imgd = context.getImageData(x, y, width, height);
-    //       var pix = imgd.data;
-    //       filters.sourceImage = imgd;
-    //   }
-    //   img.src = URL.createObjectURL(e.target.files[0]);
-    // };
     filters.grayscale = function() {
       if(filters.sourceImage == null) {
         return;
@@ -280,6 +243,10 @@
      * lineWidth - ширина линии
      */
     filters.windowPane = function(wCount, hCount, lineWidth) {
+      console.log("windowPane(wCount = " + wCount + ", hCount= " + hCount + ", lineWidth = " + lineWidth +")");
+      wCount = parseInt(wCount);
+      hCount = parseInt(hCount);
+      lineWidth = parseInt(lineWidth);
       if(filters.sourceImage == null) {
         return;
       }
@@ -287,7 +254,7 @@
       var pix = newImage.data;
       var w = newImage.width;
       var h = newImage.height;
-
+      console.log("w ", w, "h" , h);
       var offset2 = 0;
       var wSpace = Math.round((w-lineWidth*wCount)/(wCount-1));
       console.log(" w ", w, " lineWidth ", lineWidth, " wCount ", wCount, " wSpace", wSpace);

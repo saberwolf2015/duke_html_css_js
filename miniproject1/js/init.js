@@ -11,6 +11,10 @@
     var btn_window_pane = document.querySelector("#btn_window_pane");
     var btn_shark = document.querySelector("#btn_shark");
     var btn_file = document.querySelector("#btn_file");
+    //window pane elements
+    var pane_w_count = document.querySelector("#pane_w_count");
+    var pane_h_count = document.querySelector("#pane_h_count");
+    var pane_border = document.querySelector("#pane_border");
     btn_file.onchange = function(event) {
       loadImage(event);
     };
@@ -31,7 +35,14 @@
       filters.reset();
     }
     btn_window_pane.onclick = function () {
-      filters.windowPane(3,3,5);;
+      console.log("pane_w_count.value", pane_w_count.value);
+      console.log("pane_h_count.value", pane_h_count.value);
+      console.log("pane_border.value", pane_border.value)
+      // pane_w_count.value;
+      // pane_h_count.value;
+      // pane_border.value;
+      //filters.windowPane(3,3,5);
+      filters.windowPane(pane_w_count.value,pane_h_count.value,pane_border.value);
     }
     btn_shark.onclick = function () {
       filters.shark();
@@ -73,5 +84,8 @@
     btn_reset.disabled = disabled;
     btn_window_pane.disabled = disabled;
     btn_shark.disabled = disabled;
+    pane_w_count.disabled = disabled;
+    pane_h_count.disabled = disabled;
+    pane_border.disabled = disabled;
   }
 })(window.filters);
