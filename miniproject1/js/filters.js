@@ -223,26 +223,28 @@
 
       //горизонтальные линии
       var offset2 = 0;
-      var hSpace = ((w-lineWidth*(hCount-2))/(hCount-1));
+      //var hSpace = Math.round((h-lineWidth*(hCount-2))/(hCount-1));
+      var hSpace = Math.round((h-lineWidth*hCount)/(hCount-1));
       console.log(" w ", w, " lineWidth ", lineWidth, " hCount ", hCount, " hSpace", hSpace);
       //for(var k = 0; k < h; k++) {
         var offset = 0;
         for(var i = 0; i < hCount; i++) {
-          console.log(" offset " , offset);
+          console.log(" offset " , offset, " i " , i);
           for(var j = 0; j < w*lineWidth*4; j+=4) {
             //console.log(offset*4+j);
-            pix[offset*4+j] = 0;
-            pix[offset*4+j+1] = 0;
-            pix[offset*4+j+2] = 0;
+            pix[offset*w*4+j] = 0;
+            pix[offset*w*4+j+1] = 0;
+            pix[offset*w*4+j+2] = 0;
             if(i == 0) {
-              pix[offset*4+j] = 255;
+              pix[offset*w*4+j] = 255;
             } else if(i == 1) {
-              pix[offset*4+j+1] = 255;
+              pix[offset*w*4+j+1] = 255;
             } else {
-              pix[offset*4+j+2] = 255;
+              pix[offset*w*4+j+2] = 255;
             }
           }
-          offset+=w*(lineWidth) + w*hSpace;
+          offset+=(lineWidth+hSpace);
+          console.log("offset = ",offset, " " , (lineWidth+hSpace));
         }
         //offset2+=w*4;
       //}
