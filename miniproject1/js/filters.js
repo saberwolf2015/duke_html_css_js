@@ -90,31 +90,31 @@
     }
 
 
-    filters.loadImage = function(e) {
-      console.log("Load Image");
-      var context = document.getElementById('canvas').getContext('2d');
-      //var img = new Image();
-      var img = document.createElement('img');
-      img.onload = function() {
-          var canvas = document.getElementById('canvas');
-          canvas.width  = img.width;
-          canvas.height = img.height;
-          // canvas.style.width  = '800px';
-          // canvas.style.height = '600px';
-
-          context.drawImage(img, 0,0);
-          console.log("w: ",img.width,"h:", img.height);
-          //alert('the image is drawn');
-          var x = 0;
-          var y = 0;
-          var width = img.width;
-          var height = img.height;
-          var imgd = context.getImageData(x, y, width, height);
-          var pix = imgd.data;
-          filters.sourceImage = imgd;
-      }
-      img.src = URL.createObjectURL(e.target.files[0]);
-    };
+    // filters.loadImage = function(e) {
+    //   console.log("Load Image");
+    //   var context = document.getElementById('canvas').getContext('2d');
+    //   //var img = new Image();
+    //   var img = document.createElement('img');
+    //   img.onload = function() {
+    //       var canvas = document.getElementById('canvas');
+    //       canvas.width  = img.width;
+    //       canvas.height = img.height;
+    //       // canvas.style.width  = '800px';
+    //       // canvas.style.height = '600px';
+    //
+    //       context.drawImage(img, 0,0);
+    //       console.log("w: ",img.width,"h:", img.height);
+    //       //alert('the image is drawn');
+    //       var x = 0;
+    //       var y = 0;
+    //       var width = img.width;
+    //       var height = img.height;
+    //       var imgd = context.getImageData(x, y, width, height);
+    //       var pix = imgd.data;
+    //       filters.sourceImage = imgd;
+    //   }
+    //   img.src = URL.createObjectURL(e.target.files[0]);
+    // };
     filters.grayscale = function() {
       if(filters.sourceImage == null) {
         return;

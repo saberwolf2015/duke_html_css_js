@@ -10,12 +10,13 @@
       <h1>Filter fun</h1>
       <canvas id="canvas" width="300" height="300"></canvas>
       <h2>Load Images</h2>
-      <input  type="file"
+      <input
+              id="btn_file"
+              type="file"
               multiple = "false"
               accept = "image/*"
               name=""
-              value="Choose File"
-              onchange="filters.loadImage(event);"/>
+              value="Choose File"/>
       <h2>Choose Filter</h2>
       <button id="btn_gray" type="button" name="button">Grayscale</button>
       <button id="btn_red" type="button" name="button">Red</button>
