@@ -189,22 +189,37 @@
             rowNum++;
             x = 0;
           }
+          //make blue
+          var r = pix[i];
+          var g = pix[i+1];
+          var b = pix[i+2];
+          var avg = (pix[i  ] + pix[i+1] + pix[i+2])/3;
+          if(avg < 127) {
+            pix[i] = 0;
+            pix[i+1] = 0;
+            pix[i+2] = avg*2;
+          } else {
+            pix[i] = avg*2-255;
+            pix[i+1] = avg*2-255;
+            pix[i+2] = 255;
+          }
+
           if(rowNum < border || rowNum > h-border) {
             pix[i  ] = 0; // red
             pix[i+1] = 191; // green
             pix[i+2] = 255; // blue
           } else {
-              /*
-              this good
+              //this good
+              //top sinusoid
               var y = sine_h*2+  sine_h*Math.sin(sine_w*x);
               //console.log("x ", x, " y" , y, " rowNum", rowNum);
               if(rowNum < y) {
                 pix[i  ] = 0; // red
                 pix[i+1] = 191; // green
                 pix[i+2] = 255; // blue
-              }*/
-
-              var y = (w-sine_h*2-border) + sine_h*Math.sin(sine_w*x);
+              }
+              //bottom sinusoid
+              y = (h-sine_h*2-border) + sine_h*Math.sin(sine_w*x);
               //console.log("x ", x, " y" , y, " rowNum", rowNum);
               if(rowNum > y) {
                 pix[i  ] = 0; // red
