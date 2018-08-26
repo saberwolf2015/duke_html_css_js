@@ -16,6 +16,14 @@
     var pane_h_count = document.querySelector("#pane_h_count");
     var pane_border = document.querySelector("#pane_border");
     var pane_color = document.querySelector("#pane_color");
+    //частота зубов
+    var shark_teeth = document.querySelector("#shark_teeth");
+    //высота зуба
+    var shark_teeth_height = document.querySelector("#shark_teeth_height");
+    //высота десны
+    var shark_teeth_gum = document.querySelector("#shark_teeth_gum");
+
+
     btn_file.onchange = function(event) {
       loadImage(event);
     };
@@ -40,14 +48,12 @@
       console.log("pane_h_count.value", pane_h_count.value);
       console.log("pane_border.value", pane_border.value);
       console.log("pane_color.value", pane_color.value);
-      // pane_w_count.value;
-      // pane_h_count.value;
-      // pane_border.value;
       //filters.windowPane(3,3,5);
       filters.windowPane(pane_w_count.value,pane_h_count.value,pane_border.value,pane_color.value);
     }
     btn_shark.onclick = function () {
-      filters.shark();
+
+      filters.shark(shark_teeth.value,shark_teeth_height.value,shark_teeth_gum.value);
     }
   }
   function loadImage(e) {
@@ -75,6 +81,8 @@
         filters.sourceImage = imgd;
         //endble buttons
         disableButtons(false);
+        shark_teeth_gum.max=height;
+        shark_teeth_height.max=height/2;
     }
     img.src = URL.createObjectURL(e.target.files[0]);
   };
@@ -89,5 +97,9 @@
     pane_w_count.disabled = disabled;
     pane_h_count.disabled = disabled;
     pane_border.disabled = disabled;
+
+    shark_teeth.disabled = disabled;
+    shark_teeth_height.disabled = disabled;
+    shark_teeth_gum.disabled = disabled;
   }
 })(window.filters);

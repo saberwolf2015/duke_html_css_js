@@ -1,3 +1,7 @@
+/**
+ * Task for 4-th week https://www.coursera.org/learn/duke-programming-web/
+ *
+ */
 (
   function(window) {
 
@@ -115,13 +119,16 @@
         //context.putImageData(filters.sourceImage, x, y);
         context.putImageData(newImage,x,y);
     };
-    filters.shark = function() {
+    filters.shark = function(shark_teeth, shark_teeth_height,shark_teeth_gum) {
+      shark_teeth = parseInt(shark_teeth);
+      shark_teeth_height = parseInt(shark_teeth_height);
+      shark_teeth_gum = parseInt(shark_teeth_gum);
+
+      console.log(" shark_teeth ", shark_teeth, " shark_teeth_height ",shark_teeth_height,"shark_teeth_gum",shark_teeth_gum);
       if(filters.sourceImage == null) {
         return;
       }
       console.log(filters.sourceImage);
-        //var newImage = Object.assign({}, filters.sourceImage);
-        //var newImage = JSON.parse(JSON.stringify(filters.sourceImage));
         var newImage = new ImageData(filters.sourceImage.width, filters.sourceImage.height);
         console.log(newImage);
         newImage.data.set(new Uint8ClampedArray(filters.sourceImage.data));
@@ -130,15 +137,20 @@
         var pix = newImage.data;
         var w = newImage.width;
         var h = newImage.height;
-        var border = Math.round(h*0.05);//как минимум 5 процентов по краю
+        var border = shark_teeth_gum;//Math.round(h*0.05);//как минимум 5 процентов по краю
         console.log("border ", border);
-        var sine_h = Math.round(h*0.10);//высота синусоиды
-        var sine_w = Math.round(w/4);//ширина синусоиды
+        //var sine_h = Math.round(h*0.10);//высота синусоиды
+        //var sine_h = Math.round((h-border*2)*shark_teeth_height/100);
+        //console.log("sine_h ", sine_h);
+        //var sine_w = Math.round(w/4);//ширина синусоиды
+        var sine_w = Math.round(w/shark_teeth);
+
         //период синусоиды 2ПИ
         //столько пи в ширине картинки
         var piCount = w/Math.PI;
         console.log("piCount", piCount);
-        var period = 5;//5;//3;
+        //var period = 5;//5;//3;
+        var period = shark_teeth;
         if(piCount > period) sine_w = 1/(piCount/period);
 
         console.log("sine_w ", sine_w);
@@ -172,7 +184,9 @@
           } else {
               //this good
               //top sinusoid
-              var y = sine_h*2+  sine_h*Math.sin(sine_w*x);
+              //var y = sine_h*2+  sine_h*Math.sin(sine_w*x);
+              var y = shark_teeth_height+ shark_teeth_gum+ shark_teeth_height*Math.sin(sine_w*x);
+
               //console.log("x ", x, " y" , y, " rowNum", rowNum);
               if(rowNum < y) {
                 pix[i  ] = 0; // red
@@ -180,7 +194,8 @@
                 pix[i+2] = 255; // blue
               }
               //bottom sinusoid
-              y = (h-sine_h*2-border) + sine_h*Math.sin(sine_w*x);
+              //y = (h-sine_h*2-border) + sine_h*Math.sin(sine_w*x);
+              y = h - shark_teeth_height- shark_teeth_gum + shark_teeth_height*Math.sin(sine_w*x);
               //console.log("x ", x, " y" , y, " rowNum", rowNum);
               if(rowNum > y) {
                 pix[i  ] = 0; // red
