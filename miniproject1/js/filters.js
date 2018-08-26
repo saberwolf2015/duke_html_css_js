@@ -4,7 +4,9 @@
     var filters = {
       sourceImage : null,
     };
-
+    //found this method here
+    //https://stackoverflow.com/questions/32470555/javascript-algorithm-function-to-generate-rgb-values-for-a-color-along-the-visib
+    //2018.08.20
     function HSVtoRGB(h, s, v) {
         var r, g, b, i, f, p, q, t;
         if (arguments.length === 1) {
@@ -75,20 +77,6 @@
           pix[i+1] = colors[pos].g;
           pix[i+2] = colors[pos].b;
         }
-
-        // var r = pix[i];
-        // var g = pix[i+1];
-        // var b = pix[i+2];
-        // var avg = (pix[i  ] + pix[i+1] + pix[i+2])/3;
-        // if(avg < 127) {
-        //   pix[i] = avg*2;
-        //   pix[i+1] = 0;
-        //   pix[i+2] = 0;
-        // } else {
-        //   pix[i] = 255;
-        //   pix[i+1] = avg*2-255;
-        //   pix[i+2] = avg*2-255;
-        // }
       }
       var context = document.getElementById('canvas').getContext('2d');
       // Draw the ImageData at the given (x,y) coordinates.
@@ -161,6 +149,81 @@
             // pix[i+1] = 255 - pix[i+1]; // green
             // pix[i+2] = 255 - pix[i+2]; // blue
             // i+3 is alpha (the fourth element)
+        }
+        var context = document.getElementById('canvas').getContext('2d');
+        // Draw the ImageData at the given (x,y) coordinates.
+        var x = 0;
+        var y = 0;
+        //context.putImageData(filters.sourceImage, x, y);
+        context.putImageData(newImage,x,y);
+    };
+    filters.shark = function() {
+      console.log(filters.sourceImage);
+        //var newImage = Object.assign({}, filters.sourceImage);
+        //var newImage = JSON.parse(JSON.stringify(filters.sourceImage));
+        var newImage = new ImageData(filters.sourceImage.width, filters.sourceImage.height);
+        console.log(newImage);
+        newImage.data.set(new Uint8ClampedArray(filters.sourceImage.data));
+        console.log(newImage);
+        //var pix = filters.sourceImage.data;
+        var pix = newImage.data;
+        var w = newImage.width;
+        var h = newImage.height;
+        var border = Math.round(h*0.05);//как минимум 5 процентов по краю
+        console.log("border ", border);
+        var sine_h = Math.round(h*0.10);//высота синусоиды
+        var sine_w = Math.round(w/4);//ширина синусоиды
+        //период синусоиды 2ПИ
+        //столько пи в ширине картинки
+        var piCount = w/Math.PI;
+        console.log("piCount", piCount);
+        var period = 5;//3;
+        if(piCount > period) sine_w = 1/(piCount/period);
+
+        console.log("sine_w ", sine_w);
+        var rowNum = 0;
+        var x = 0;
+        for (var i = 0, n = pix.length; i < n; i += 4) {
+          //console.log("rowNum", rowNum);
+          if(i/4 % w == 0) {
+            rowNum++;
+            x = 0;
+          }
+          if(rowNum < border || rowNum > h-border) {
+            pix[i  ] = 0; // red
+            pix[i+1] = 191; // green
+            pix[i+2] = 255; // blue
+          } else {
+              /*
+              this good
+              var y = sine_h*2+  sine_h*Math.sin(sine_w*x);
+              //console.log("x ", x, " y" , y, " rowNum", rowNum);
+              if(rowNum < y) {
+                pix[i  ] = 0; // red
+                pix[i+1] = 191; // green
+                pix[i+2] = 255; // blue
+              }*/
+
+              var y = (w-sine_h*2-border) + sine_h*Math.sin(sine_w*x);
+              //console.log("x ", x, " y" , y, " rowNum", rowNum);
+              if(rowNum > y) {
+                pix[i  ] = 0; // red
+                pix[i+1] = 191; // green
+                pix[i+2] = 255; // blue
+              }
+          }
+          x++;
+          // var r = pix[i];
+          // var g = pix[i+1];
+          // var b = pix[i+2];
+          //
+          // var avg = (pix[i  ] + pix[i+1] + pix[i+2])/3;
+          // if(i < 50) {
+          // console.log("["+i+"] ("+r+","+g+","+b+") avg = " + avg);
+          // }
+          // pix[i  ] = avg; // red
+          // pix[i+1] = avg; // green
+          // pix[i+2] = avg; // blue
         }
         var context = document.getElementById('canvas').getContext('2d');
         // Draw the ImageData at the given (x,y) coordinates.
