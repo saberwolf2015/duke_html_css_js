@@ -24,6 +24,7 @@
     var shark_teeth_gum = document.querySelector("#shark_teeth_gum");
 
     var btn_rainbow_challenge = document.querySelector("#btn_rainbow_challenge");
+    var btn_blur_challenge = document.querySelector("#btn_blur_challenge");
 
 
     btn_file.onchange = function(event) {
@@ -48,6 +49,9 @@
 
     btn_rainbow_challenge.onclick = function() {
       filters.rainbowChallenge();
+    }
+    btn_blur_challenge.onclick = function() {
+      filters.blurChallenge();
     }
     btn_window_pane.onclick = function () {
       console.log("pane_w_count.value", pane_w_count.value);
@@ -109,5 +113,6 @@
     shark_teeth_gum.disabled = disabled;
 
     btn_rainbow_challenge.disabled = disabled;
+    btn_blur_challenge.disabled = disabled;
   }
 })(window.filters);

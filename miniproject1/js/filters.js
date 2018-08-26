@@ -374,6 +374,51 @@
       //context.putImageData(filters.sourceImage, x, y);
       context.putImageData(newImage,x,y);
     }
+    filters.blurChallenge = function() {
+      if(filters.sourceImage == null) {
+        return;
+      }
+      var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
+      var pix = newImage.data;
+      var width = newImage.width;
+      var height = newImage.height;
+
+      var colors = [
+        {r: 255, g: 0, b: 0},//red
+        {r: 255, g: 165, b: 0},//orange
+        {r: 255, g: 255, b: 0},//yellow
+        {r: 0, g: 255, b: 0},//green
+        {r: 0, g: 0, b: 255},//blue
+        //{r: 29, g: 0, b: 51},//indigo//75,0,130
+        {r: 75, g: 0, b: 130},//indigo//75,0,130
+        {r: 238, g: 130, b: 238}//violet EE82EE
+      ];
+      var step = Math.round(height/colors.length);
+      console.log("colors",colors);
+      console.log("step",step);
+      console.log("pix.lengt ", pix.length);
+      var rowNum = 0;
+
+      for (var i = 0, n = pix.length; i < n; i += 4) {
+        var random = Math.random();
+        if(random < 0.5) {
+
+        } else {
+          var pos = getNewCoord(-10,10,width, height,i);
+          filters.sourceImage.data[pos];
+          pix[i] = filters.sourceImage.data[pos];
+          pix[i+1] = filters.sourceImage.data[pos+1];
+          pix[i+2] = filters.sourceImage.data[pos+2];
+
+        }
+      }
+      var context = document.getElementById('canvas').getContext('2d');
+      // Draw the ImageData at the given (x,y) coordinates.
+      var x = 0;
+      var y = 0;
+      //context.putImageData(filters.sourceImage, x, y);
+      context.putImageData(newImage,x,y);
+    }
     /**
      * The function from  https://www.coursera.org/learn/duke-programming-web/supplement/oUvMH/miniproject-challenge
      */
@@ -385,6 +430,15 @@
         ret = (2 - Rc/127.5)*avg + 2*Rc - 255;
       }
       return ret;
+    }
+    /**
+     * return new coordinates
+     */
+    function getNewCoord(min, max, w, h, current) {
+      var offsetX = Math.floor(Math.random() * (max - min + 1)) + min;
+      var offsetY = Math.floor(Math.random() * (max - min + 1)) + min;
+      var newPos = current+offsetY*w*4 + offsetX*4;
+      return newPos;
     }
     window.filters = filters;
   }
