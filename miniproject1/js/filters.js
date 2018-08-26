@@ -203,9 +203,9 @@
       var h = newImage.height;
 
       var offset2 = 0;
-      var wSpace = Math.round((w-lineWidth*(wCount-2))/(wCount-1));
-      console.log(" w ", w, " lineWidth ", lineWidth, " wCount ", wCount, " wSpace", wSpace);
-      //вертикальные линии
+      //var wSpace = Math.round((w-lineWidth*(wCount-2))/(wCount-1));
+      // console.log(" w ", w, " lineWidth ", lineWidth, " wCount ", wCount, " wSpace", wSpace);
+      // //вертикальные линии
       // for(var k = 0; k < h; k++) {
       //   var offset = 0;
       //   for(var i = 0; i < wCount; i++) {
@@ -220,16 +220,38 @@
       //   }
       //   offset2+=w*4;
       // }
+      var wSpace = Math.round((w-lineWidth*wCount)/(wCount-1));
+      console.log(" w ", w, " lineWidth ", lineWidth, " wCount ", wCount, " wSpace", wSpace);
+      //по всей высоте
+      for(var k = 0; k < h; k++) {
+        var offset = 0;
+        //берём линию по ширине
+        for(var i = 0; i < wCount; i++) {
+          console.log(" offset " , offset);
+          //рисуем части горизонтальных полос
+          for(var j = 0; j < lineWidth*4; j+=4) {
+            //console.log(offset*4+j);
+            pix[offset2+offset*4+j] = 255;
+            pix[offset2+offset*4+j+1] = 0;
+            pix[offset2+offset*4+j+2] = 0;
+          }
+          //offset+=wSpace;
+          offset+=(lineWidth+wSpace);
+        }
+        offset2+=w*4;
+      }
 
       //горизонтальные линии
+
       var offset2 = 0;
       //var hSpace = Math.round((h-lineWidth*(hCount-2))/(hCount-1));
       var hSpace = Math.round((h-lineWidth*hCount)/(hCount-1));
       console.log(" w ", w, " lineWidth ", lineWidth, " hCount ", hCount, " hSpace", hSpace);
-      //for(var k = 0; k < h; k++) {
         var offset = 0;
+        //по всей высоте
         for(var i = 0; i < hCount; i++) {
           console.log(" offset " , offset, " i " , i);
+          //рисуем горизонтальые линии по заданной ширине
           for(var j = 0; j < w*lineWidth*4; j+=4) {
             //console.log(offset*4+j);
             pix[offset*w*4+j] = 0;
@@ -243,43 +265,11 @@
               pix[offset*w*4+j+2] = 255;
             }
           }
+          //после делаем смещение
           offset+=(lineWidth+hSpace);
           console.log("offset = ",offset, " " , (lineWidth+hSpace));
         }
-        //offset2+=w*4;
-      //}
-      //
-      // var rowNum = 0;
-      // var w_space = w/wCount;
-      // var h_space = h/hCount;
-      // console.log("w_space",w_space,"h_space",h_space);
-      // for (var i = 0, n = pix.length; i < n; i += 4) {
-      //   if(i/4 % w == 0) rowNum++;
-      //   //console.log("rowNum",rowNum);
-      //   if(i/4 % w_space == 0) {
-      //     pix[i] = 0;
-      //     pix[i+1] = 0;
-      //     pix[i+2] = 0;
-      //   }
-      //   if(rowNum % h_space == 0) {
-      //     pix[i] = 0;
-      //     pix[i+1] = 0;
-      //     pix[i+2] = 0;
-      //   }
-      //   // var r = pix[i];
-      //   // var g = pix[i+1];
-      //   // var b = pix[i+2];
-      //   // var avg = (pix[i  ] + pix[i+1] + pix[i+2])/3;
-      //   // if(avg < 127) {
-      //   //   pix[i] = avg*2;
-      //   //   pix[i+1] = 0;
-      //   //   pix[i+2] = 0;
-      //   // } else {
-      //   //   pix[i] = 255;
-      //   //   pix[i+1] = avg*2-255;
-      //   //   pix[i+2] = avg*2-255;
-      //   // }
-      // }
+        
       var context = document.getElementById('canvas').getContext('2d');
       // Draw the ImageData at the given (x,y) coordinates.
       var x = 0;
