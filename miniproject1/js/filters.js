@@ -65,7 +65,11 @@
         //console.log(" color ", colors[pos].r,colors[pos].g,colors[pos].b);
         var avg = (pix[i  ] + pix[i+1] + pix[i+2])/3;
         if(avg < 127)  {
-
+            //пробуем пропорционально всё ументшить
+            var percent = avg/127;
+            pix[i] = colors[pos].r*percent;
+            pix[i+1] = colors[pos].g*percent;
+            pix[i+2] = colors[pos].b*percent;
         } else {
           pix[i] = colors[pos].r;
           pix[i+1] = colors[pos].g;
@@ -203,23 +207,6 @@
       var h = newImage.height;
 
       var offset2 = 0;
-      //var wSpace = Math.round((w-lineWidth*(wCount-2))/(wCount-1));
-      // console.log(" w ", w, " lineWidth ", lineWidth, " wCount ", wCount, " wSpace", wSpace);
-      // //вертикальные линии
-      // for(var k = 0; k < h; k++) {
-      //   var offset = 0;
-      //   for(var i = 0; i < wCount; i++) {
-      //     console.log(" offset " , offset);
-      //     for(var j = 0; j < lineWidth*4; j+=4) {
-      //       //console.log(offset*4+j);
-      //       pix[offset2+offset*4+j] = 255;
-      //       pix[offset2+offset*4+j+1] = 0;
-      //       pix[offset2+offset*4+j+2] = 0;
-      //     }
-      //     offset+=wSpace;
-      //   }
-      //   offset2+=w*4;
-      // }
       var wSpace = Math.round((w-lineWidth*wCount)/(wCount-1));
       console.log(" w ", w, " lineWidth ", lineWidth, " wCount ", wCount, " wSpace", wSpace);
       //по всей высоте
@@ -269,7 +256,7 @@
           offset+=(lineWidth+hSpace);
           console.log("offset = ",offset, " " , (lineWidth+hSpace));
         }
-        
+
       var context = document.getElementById('canvas').getContext('2d');
       // Draw the ImageData at the given (x,y) coordinates.
       var x = 0;
