@@ -23,6 +23,8 @@
     //высота десны
     var shark_teeth_gum = document.querySelector("#shark_teeth_gum");
 
+    var btn_rainbow_challenge = document.querySelector("#btn_rainbow_challenge");
+
 
     btn_file.onchange = function(event) {
       loadImage(event);
@@ -42,6 +44,10 @@
     }
     btn_reset.onclick = function () {
       filters.reset();
+    }
+
+    btn_rainbow_challenge.onclick = function() {
+      filters.rainbowChallenge();
     }
     btn_window_pane.onclick = function () {
       console.log("pane_w_count.value", pane_w_count.value);
@@ -101,5 +107,7 @@
     shark_teeth.disabled = disabled;
     shark_teeth_height.disabled = disabled;
     shark_teeth_gum.disabled = disabled;
+
+    btn_rainbow_challenge.disabled = disabled;
   }
 })(window.filters);

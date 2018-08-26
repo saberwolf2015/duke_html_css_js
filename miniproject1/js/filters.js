@@ -324,6 +324,68 @@
       }
       return ret;
     };
+    filters.rainbowChallenge = function() {
+      if(filters.sourceImage == null) {
+        return;
+      }
+      var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
+      var pix = newImage.data;
+      var width = newImage.width;
+      var height = newImage.height;
+
+      var colors = [
+        {r: 255, g: 0, b: 0},//red
+        {r: 255, g: 165, b: 0},//orange
+        {r: 255, g: 255, b: 0},//yellow
+        {r: 0, g: 255, b: 0},//green
+        {r: 0, g: 0, b: 255},//blue
+        //{r: 29, g: 0, b: 51},//indigo//75,0,130
+        {r: 75, g: 0, b: 130},//indigo//75,0,130
+        {r: 238, g: 130, b: 238}//violet EE82EE
+      ];
+      var step = Math.round(height/colors.length);
+      console.log("colors",colors);
+      console.log("step",step);
+      console.log("pix.lengt ", pix.length);
+      var rowNum = 0;
+      for (var i = 0, n = pix.length; i < n; i += 4) {
+        if(i/4 % width == 0) {
+          //console.log("i ", i, " width ", width, " rowNum ", rowNum);
+          rowNum++;
+        }
+        //console.log(rowNum/step);
+        var pos = Math.floor(rowNum / step);
+        //console.log("pos ", pos, " rowNum", rowNum);
+        if(pos >= colors.length) pos = colors.length-1;
+        //console.log("pos", pos, "rowNum", rowNum, " step", step);
+        //console.log(" color ", colors[pos].r,colors[pos].g,colors[pos].b);
+        var avg = (pix[i  ] + pix[i+1] + pix[i+2])/3;
+        var r = transformColor(colors[pos].r , avg);
+        var g = transformColor(colors[pos].g, avg);
+        var b = transformColor(colors[pos].b, avg);
+        pix[i] = r;
+        pix[i+1] = g;
+        pix[i+2] = b;
+      }
+      var context = document.getElementById('canvas').getContext('2d');
+      // Draw the ImageData at the given (x,y) coordinates.
+      var x = 0;
+      var y = 0;
+      //context.putImageData(filters.sourceImage, x, y);
+      context.putImageData(newImage,x,y);
+    }
+    /**
+     * The function from  https://www.coursera.org/learn/duke-programming-web/supplement/oUvMH/miniproject-challenge
+     */
+    function transformColor(Rc, avg) {
+      var ret;
+      if(avg < 128) {
+        ret  = Rc/127.5*avg ;
+      } else {
+        ret = (2 - Rc/127.5)*avg + 2*Rc - 255;
+      }
+      return ret;
+    }
     window.filters = filters;
   }
 )(window);
