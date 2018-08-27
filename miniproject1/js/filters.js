@@ -1,6 +1,8 @@
 /**
  * Task for 4-th week https://www.coursera.org/learn/duke-programming-web/
  * Requirements - vanilla js, no frameworks.
+ * @author Tchernopyatov A.V.
+ * @version 1.1
  */
 (
   function(window) {
