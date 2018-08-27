@@ -1,6 +1,6 @@
 /**
  * Task for 4-th week https://www.coursera.org/learn/duke-programming-web/
- *
+ * Requirements - vanilla js, no frameworks.
  */
 (
   function(window) {
@@ -36,7 +36,12 @@
             b: Math.round(b * 255)
         };
     }
-
+    filters.loadImage = function(imgd) {
+      //pass image to filters
+      filters.sourceImage = imgd;
+      //keep origin image untouched
+      filters.originImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);;
+    }
     filters.rainbow = function() {
       if(filters.sourceImage == null) {
         return;
@@ -61,8 +66,6 @@
 
         var pos = Math.round(rowNum /step);
         if(pos >= colors.length) pos = colors.length-1;
-        //console.log("pos", pos, "rowNum", rowNum, " step", step);
-        //console.log(" color ", colors[pos].r,colors[pos].g,colors[pos].b);
         var avg = (pix[i  ] + pix[i+1] + pix[i+2])/3;
         if(avg < 127)  {
             //пробуем пропорционально всё ументшить
@@ -80,7 +83,6 @@
       // Draw the ImageData at the given (x,y) coordinates.
       var x = 0;
       var y = 0;
-      //context.putImageData(filters.sourceImage, x, y);
       context.putImageData(newImage,x,y);
     }
 
@@ -88,14 +90,6 @@
       if(filters.sourceImage == null) {
         return;
       }
-      console.log(filters.sourceImage);
-        //var newImage = Object.assign({}, filters.sourceImage);
-        //var newImage = JSON.parse(JSON.stringify(filters.sourceImage));
-        // var newImage = new ImageData(filters.sourceImage.width, filters.sourceImage.height);
-        // console.log(newImage);
-        // newImage.data.set(new Uint8ClampedArray(filters.sourceImage.data));
-        // console.log(newImage);
-        //var pix = filters.sourceImage.data;
         var newImage = filters.sourceImage;
         var pix = newImage.data;
         for (var i = 0, n = pix.length; i < n; i += 4) {
@@ -110,16 +104,11 @@
           pix[i  ] = avg; // red
           pix[i+1] = avg; // green
           pix[i+2] = avg; // blue
-            // pix[i  ] = 255 - pix[i  ]; // red
-            // pix[i+1] = 255 - pix[i+1]; // green
-            // pix[i+2] = 255 - pix[i+2]; // blue
-            // i+3 is alpha (the fourth element)
         }
         var context = document.getElementById('canvas').getContext('2d');
         // Draw the ImageData at the given (x,y) coordinates.
         var x = 0;
         var y = 0;
-        //context.putImageData(filters.sourceImage, x, y);
         context.putImageData(newImage,x,y);
     };
     filters.shark = function(shark_teeth, shark_teeth_height,shark_teeth_gum) {
@@ -131,8 +120,7 @@
       if(filters.sourceImage == null) {
         return;
       }
-        var newImage = filters.sourceImage; //new ImageData(filters.sourceImage.width, filters.sourceImage.height);
-        //newImage.data.set(new Uint8ClampedArray(filters.sourceImage.data));
+        var newImage = filters.sourceImage;
         var pix = newImage.data;
         var w = newImage.width;
         var h = newImage.height;
@@ -205,7 +193,6 @@
       if(filters.sourceImage == null) {
         return;
       }
-      // var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
       var newImage = filters.sourceImage;
       var pix = newImage.data;
       for (var i = 0, n = pix.length; i < n; i += 4) {
@@ -227,10 +214,8 @@
       // Draw the ImageData at the given (x,y) coordinates.
       var x = 0;
       var y = 0;
-      //context.putImageData(filters.sourceImage, x, y);
       context.putImageData(newImage,x,y);
     }
-    //ДОДЕЛАТЬ ЭТОТ ФИЛЬТР
     /**
      * wCount - сколько линий по ширине
      * hCount - сколько линий по высоте
@@ -245,7 +230,6 @@
       if(filters.sourceImage == null) {
         return;
       }
-      //var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
       var newImage = filters.sourceImage;
       var pix = newImage.data;
       var w = newImage.width;
@@ -285,17 +269,9 @@
           //console.log(" offset " , offset, " i " , i);
           //рисуем горизонтальые линии по заданной ширине
           for(var j = 0; j < w*lineWidth*4; j+=4) {
-            //console.log(offset*4+j);
             pix[offset*w*4+j] = color.r;
             pix[offset*w*4+j+1] = color.g;
             pix[offset*w*4+j+2] = color.b;
-            // if(i == 0) {
-            //   pix[offset*w*4+j] = 255;
-            // } else if(i == 1) {
-            //   pix[offset*w*4+j+1] = 255;
-            // } else {
-            //   pix[offset*w*4+j+2] = 255;
-            // }
           }
           //после делаем смещение
           offset+=(lineWidth+hSpace);
@@ -334,7 +310,6 @@
       if(filters.sourceImage == null) {
         return;
       }
-      //var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
       var newImage = filters.sourceImage;
       var pix = newImage.data;
       var width = newImage.width;
@@ -385,26 +360,10 @@
       if(filters.sourceImage == null) {
         return;
       }
-      //var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
       var newImage = filters.sourceImage;
       var pix = newImage.data;
       var width = newImage.width;
       var height = newImage.height;
-
-      var colors = [
-        {r: 255, g: 0, b: 0},//red
-        {r: 255, g: 165, b: 0},//orange
-        {r: 255, g: 255, b: 0},//yellow
-        {r: 0, g: 255, b: 0},//green
-        {r: 0, g: 0, b: 255},//blue
-        //{r: 29, g: 0, b: 51},//indigo//75,0,130
-        {r: 75, g: 0, b: 130},//indigo//75,0,130
-        {r: 238, g: 130, b: 238}//violet EE82EE
-      ];
-      var step = Math.round(height/colors.length);
-      console.log("colors",colors);
-      console.log("step",step);
-      console.log("pix.lengt ", pix.length);
       var rowNum = 0;
 
       for (var i = 0, n = pix.length; i < n; i += 4) {
@@ -424,7 +383,6 @@
       // Draw the ImageData at the given (x,y) coordinates.
       var x = 0;
       var y = 0;
-      //context.putImageData(filters.sourceImage, x, y);
       context.putImageData(newImage,x,y);
     }
     /**

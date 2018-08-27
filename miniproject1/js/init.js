@@ -80,16 +80,12 @@
 
         context.drawImage(img, 0,0);
         console.log("w: ",img.width,"h:", img.height);
-        //alert('the image is drawn');
         var x = 0;
         var y = 0;
         var width = img.width;
         var height = img.height;
         var imgd = context.getImageData(x, y, width, height);
-        var pix = imgd.data;
-        //pass image to filters
-        filters.sourceImage = imgd;
-        filters.originImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);;
+        filters.loadImage(imgd);
         //endble buttons
         disableButtons(false);
         shark_teeth_gum.max=height;
