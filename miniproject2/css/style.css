@@ -6,6 +6,19 @@ h2 {
 }
 .row section {
   text-align: center;
+  padding: 10px;
+}
+#start_btn {
+  width: 200px;
+  height: 50px;
+  font-size: 25px;
+  background-color: lightgreen;
+}
+.container {
+padding-right: 15px;
+padding-left: 15px;
+margin-right: auto;
+margin-left: auto;
 }
 /* Simple Responsive Framework. */
 @media (min-width: 768px) {
