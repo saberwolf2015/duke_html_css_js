@@ -240,7 +240,7 @@
   function chopToHide(value) {
     //console.log("chopToHide was", value, "now ", value%16);
     //return (value%16);
-    return (value/16);
+    return  Math.floor(value/16);
   }
   function offsetToHide(value) {
     //console.log("offsetToHide was", value, "now ", Math.floor(value/16)*16);
