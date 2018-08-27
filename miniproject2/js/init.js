@@ -64,7 +64,21 @@
   function run() {
     var x = 0;
     var y = 0;
-    var img_to_hide_prepared = prepareImage(data.image_to_hide,chopToHide,data.image_origin.width, data.image_origin.height);
+    var w = data.image_origin.width;
+    var h = data.image_origin.height;
+    if(data.image_to_hide.width < w) {
+      console.log("w lesser");
+      w = data.image_to_hide.width;
+    }
+    if(data.image_to_hide.height < h) {
+      console.log("h lesser");
+      h = data.image_to_hide.height;
+    }
+    console.log("data.image_origin.width", data.image_origin.width, "data.image_origin.height",data.image_origin.height);
+    console.log("data.image_to_hide.width",data.image_to_hide.width,"data.image_to_hide.height", data.image_to_hide.height);
+    console.log("w ",w," h", h);
+    console.log("chopToHide");
+    var img_to_hide_prepared = prepareImage(data.image_to_hide,chopToHide,w, h);
     // Draw the ImageData at the given (x,y) coordinates.
     var canvas = document.getElementById('image_to_hide2');
     canvas.width  = img_to_hide_prepared.width;
@@ -72,12 +86,36 @@
     var context = canvas.getContext('2d');
     context.putImageData(img_to_hide_prepared, x, y);
 
-    var img_origin_prepared = prepareImage(data.image_origin,offsetToHide,data.image_origin.width, data.image_origin.height);
+    console.log("offsetToHide");
+    var img_origin_prepared = prepareImage(data.image_origin,offsetToHide,w, h);
     canvas = document.getElementById('image_origin2');
     canvas.width  = img_origin_prepared.width;
     canvas.height = img_origin_prepared.height;
-    context = document.getElementById('image_origin2').getContext('2d');
+    context = canvas.getContext('2d');
     context.putImageData(img_origin_prepared, x, y);
+
+    console.log("mixImage");
+    var image_mix = mixImage(img_to_hide_prepared, img_origin_prepared);
+    var canvas = document.getElementById('image_mix');
+    canvas.width  = image_mix.width;
+    canvas.height = image_mix.height;
+    var context = canvas.getContext('2d');
+    context.putImageData(img_origin_prepared, x, y);
+
+    var image_extracted = extractImage(image_mix,recover);
+    var canvas = document.getElementById('image_to_hide_extracted');
+    canvas.width  = image_extracted.width;
+    canvas.height = image_extracted.height;
+    var context = canvas.getContext('2d');
+    context.putImageData(image_extracted, x, y);
+
+    var image_origin_extracted = extractImage(image_mix, function(value) {return (value/16)*16});
+    var canvas = document.getElementById('image_origin_extracted');
+    canvas.width  = image_origin_extracted.width;
+    canvas.height = image_origin_extracted.height;
+    var context = canvas.getContext('2d');
+    context.putImageData(image_origin_extracted, x, y);
+
   }
   function prepareImage(img, func, w, h) {
     if(img == null) {
@@ -101,7 +139,13 @@
           var r = func(img.data[offset + j]);
           var g = func(img.data[offset + j+1]);
           var b = func(img.data[offset + j+2]);
-          var a = img.data[offset + j+3];
+
+          if(c ==0 && j < 10) {
+            console.log("prepare ", img.data[offset + j],r);
+          }
+          //var a = img.data[offset + j+3];
+          //var a = func(img.data[offset + j+3]);
+          var a = 255;
           pix[c] = r;
           pix[c+1] = g;
           pix[c+2] = b;
@@ -127,13 +171,88 @@
       //context.putImageData(newImage,x,y);
       return newImage;
   };
+  function mixImage(img_to_hide, img_origin) {
+    if(img_to_hide == null || img_origin == null) {
+      return;
+    }
+    var w = img_to_hide.width;
+    var h = img_to_hide.height;
+    console.log("w ", w, " h ", h);
+      //var newImage = Object.assign({}, filters.sourceImage);
+      //var newImage = JSON.parse(JSON.stringify(filters.sourceImage));
+      //var newImage = new ImageData(img.width, img.height);
+      var newImage = new ImageData(w, h);
+      console.log(newImage);
+      //newImage.data.set(new Uint8ClampedArray(img.data));
+      newImage.data.set(new Uint8ClampedArray(w*h*4));
+      console.log(newImage);
+      //var pix = filters.sourceImage.data;
+      var pix = newImage.data;
+      for (var i = 0, n = pix.length; i < n; i += 4) {
+        var r = sumImage(img_origin.data[i],img_to_hide.data[i]);
+        var g = sumImage(img_origin.data[i+1],img_to_hide.data[i+1]);
+        var b = sumImage(img_origin.data[i+2],img_to_hide.data[i+2]);
+        if(i < 10) {
+          console.log("mix origin " , img_origin.data[i]," to_hide ", img_to_hide.data[i],"result", r);
+        }
+        //var a = img_origin.data[i+3];
+        //var a = sumImage(img_origin.data[i+3],img_to_hide.data[i+3]);
+        var a = 255;
+        pix[i] = r;
+        pix[i+1] = g;
+        pix[i+2] = b;
+        pix[i+3] = a;
+      }
+      return newImage;
+  };
+
+  function extractImage(img, func) {
+      if(img == null) {
+        return;
+      }
+      var w = img.width;
+      var h = img.height;
+      console.log("w ", w, " h ", h);
+      console.log("w ", w, " h ", h);
+        var newImage = new ImageData(w, h);
+        console.log(newImage);
+        //newImage.data.set(new Uint8ClampedArray(img.data));
+        newImage.data.set(new Uint8ClampedArray(w*h*4));
+        console.log(newImage);
+        //var pix = filters.sourceImage.data;
+        var pix = newImage.data;
+        for (var i = 0, n = pix.length; i < n; i += 4) {
+          var r = func(img.data[i]);
+          var g = func(img.data[i+1]);
+          var b = func(img.data[i+2]);
+          if(i < 10) {
+            console.log("recover ", img.data[i],r);
+          }
+          //var a = recover(img.data[i+3]);;//img.data[i+3];
+          var a = 255;
+          pix[i] = r;
+          pix[i+1] = g;
+          pix[i+2] = b;
+          pix[i+3] = a;
+        }
+        return newImage;
+  }
   function chopToHide(value) {
     //console.log("chopToHide was", value, "now ", value%16);
-    return (value%16);
+    //return (value%16);
+    return (value/16);
   }
   function offsetToHide(value) {
     //console.log("offsetToHide was", value, "now ", Math.floor(value/16)*16);
     return Math.floor(value/16)*16;
+  }
+  function recover(value) {
+    return (value%16)*16;
+  }
+  function sumImage(value_origin, value_to_hide) {
+    var ret = value_origin + value_to_hide;
+    if(ret > 255) console.log("too BIG SUM", ret);
+    return ret;
   }
 }
 }
