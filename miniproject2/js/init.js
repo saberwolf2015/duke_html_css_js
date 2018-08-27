@@ -108,14 +108,6 @@
     canvas.height = image_extracted.height;
     var context = canvas.getContext('2d');
     context.putImageData(image_extracted, x, y);
-
-    var image_origin_extracted = extractImage(image_mix, function(value) {return (value/16)*16});
-    var canvas = document.getElementById('image_origin_extracted');
-    canvas.width  = image_origin_extracted.width;
-    canvas.height = image_origin_extracted.height;
-    var context = canvas.getContext('2d');
-    context.putImageData(image_origin_extracted, x, y);
-
   }
   function prepareImage(img, func, w, h) {
     if(img == null) {

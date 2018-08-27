@@ -4,6 +4,9 @@ h2 {
 * {
   box-sizing: border-box;
 }
+.row section {
+  text-align: center;
+}
 /* Simple Responsive Framework. */
 @media (min-width: 768px) {
   .container {
