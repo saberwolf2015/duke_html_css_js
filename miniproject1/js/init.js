@@ -3,6 +3,7 @@
  */
 (function(filters) {
   document.addEventListener("DOMContentLoaded", ready);
+
   function ready() {
     var btn_gray = document.querySelector("#btn_gray");
     var btn_red = document.querySelector("#btn_red");
@@ -34,16 +35,16 @@
     disableButtons(true);
 
     //alert("ME REAdy");
-    btn_gray.onclick = function () {
+    btn_gray.onclick = function() {
       filters.grayscale();
     }
-    btn_red.onclick = function () {
+    btn_red.onclick = function() {
       filters.red();
     }
-    btn_rainbow.onclick = function () {
+    btn_rainbow.onclick = function() {
       filters.rainbow();
     }
-    btn_reset.onclick = function () {
+    btn_reset.onclick = function() {
       filters.reset();
     }
 
@@ -53,48 +54,50 @@
     btn_blur_challenge.onclick = function() {
       filters.blurChallenge();
     }
-    btn_window_pane.onclick = function () {
+    btn_window_pane.onclick = function() {
       console.log("pane_w_count.value", pane_w_count.value);
       console.log("pane_h_count.value", pane_h_count.value);
       console.log("pane_border.value", pane_border.value);
       console.log("pane_color.value", pane_color.value);
       //filters.windowPane(3,3,5);
-      filters.windowPane(pane_w_count.value,pane_h_count.value,pane_border.value,pane_color.value);
+      filters.windowPane(pane_w_count.value, pane_h_count.value, pane_border.value, pane_color.value);
     }
-    btn_shark.onclick = function () {
+    btn_shark.onclick = function() {
 
-      filters.shark(shark_teeth.value,shark_teeth_height.value,shark_teeth_gum.value);
+      filters.shark(shark_teeth.value, shark_teeth_height.value, shark_teeth_gum.value);
     }
   }
+
   function loadImage(e) {
     console.log("Load Image");
     var context = document.getElementById('canvas').getContext('2d');
     //var img = new Image();
     var img = document.createElement('img');
     img.onload = function() {
-        var canvas = document.getElementById('canvas');
-        canvas.width  = img.width;
-        canvas.height = img.height;
-        // canvas.style.width  = '800px';
-        // canvas.style.height = '600px';
+      var canvas = document.getElementById('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      // canvas.style.width  = '800px';
+      // canvas.style.height = '600px';
 
-        context.drawImage(img, 0,0);
-        console.log("w: ",img.width,"h:", img.height);
-        var x = 0;
-        var y = 0;
-        var width = img.width;
-        var height = img.height;
-        var imgd = context.getImageData(x, y, width, height);
-        filters.loadImage(imgd);
-        //endble buttons
-        disableButtons(false);
-        shark_teeth_gum.max=height;
-        shark_teeth_height.max=height/2;
+      context.drawImage(img, 0, 0);
+      console.log("w: ", img.width, "h:", img.height);
+      var x = 0;
+      var y = 0;
+      var width = img.width;
+      var height = img.height;
+      var imgd = context.getImageData(x, y, width, height);
+      filters.loadImage(imgd);
+      //endble buttons
+      disableButtons(false);
+      shark_teeth_gum.max = height;
+      shark_teeth_height.max = height / 2;
     }
     img.src = URL.createObjectURL(e.target.files[0]);
   };
+
   function disableButtons(disabled) {
-    if(!disabled) disabled = false;
+    if (!disabled) disabled = false;
     btn_gray.disabled = disabled;
     btn_red.disabled = disabled;
     btn_rainbow.disabled = disabled;

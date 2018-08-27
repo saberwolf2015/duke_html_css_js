@@ -2,6 +2,6 @@ canvas {
   border: 1px solid black;
 }
 
-form > fieldset:first-child {
+form>fieldset:first-child {
   text-align: center;
 }
