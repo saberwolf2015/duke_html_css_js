@@ -89,6 +89,7 @@
         var pix = imgd.data;
         //pass image to filters
         filters.sourceImage = imgd;
+        filters.originImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);;
         //endble buttons
         disableButtons(false);
         shark_teeth_gum.max=height;

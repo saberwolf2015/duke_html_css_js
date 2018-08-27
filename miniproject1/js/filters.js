@@ -7,6 +7,7 @@
 
     var filters = {
       sourceImage : null,
+      originImage : null
     };
     //found this method here
     //https://stackoverflow.com/questions/32470555/javascript-algorithm-function-to-generate-rgb-values-for-a-color-along-the-visib
@@ -40,7 +41,8 @@
       if(filters.sourceImage == null) {
         return;
       }
-      var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
+      //var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
+      var newImage = filters.sourceImage;
       var pix = newImage.data;
       var width = newImage.width;
       var height = newImage.height;
@@ -89,11 +91,12 @@
       console.log(filters.sourceImage);
         //var newImage = Object.assign({}, filters.sourceImage);
         //var newImage = JSON.parse(JSON.stringify(filters.sourceImage));
-        var newImage = new ImageData(filters.sourceImage.width, filters.sourceImage.height);
-        console.log(newImage);
-        newImage.data.set(new Uint8ClampedArray(filters.sourceImage.data));
-        console.log(newImage);
+        // var newImage = new ImageData(filters.sourceImage.width, filters.sourceImage.height);
+        // console.log(newImage);
+        // newImage.data.set(new Uint8ClampedArray(filters.sourceImage.data));
+        // console.log(newImage);
         //var pix = filters.sourceImage.data;
+        var newImage = filters.sourceImage;
         var pix = newImage.data;
         for (var i = 0, n = pix.length; i < n; i += 4) {
           var r = pix[i];
@@ -128,8 +131,8 @@
       if(filters.sourceImage == null) {
         return;
       }
-        var newImage = new ImageData(filters.sourceImage.width, filters.sourceImage.height);
-        newImage.data.set(new Uint8ClampedArray(filters.sourceImage.data));
+        var newImage = filters.sourceImage; //new ImageData(filters.sourceImage.width, filters.sourceImage.height);
+        //newImage.data.set(new Uint8ClampedArray(filters.sourceImage.data));
         var pix = newImage.data;
         var w = newImage.width;
         var h = newImage.height;
@@ -202,7 +205,8 @@
       if(filters.sourceImage == null) {
         return;
       }
-      var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
+      // var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
+      var newImage = filters.sourceImage;
       var pix = newImage.data;
       for (var i = 0, n = pix.length; i < n; i += 4) {
         var r = pix[i];
@@ -241,7 +245,8 @@
       if(filters.sourceImage == null) {
         return;
       }
-      var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
+      //var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
+      var newImage = filters.sourceImage;
       var pix = newImage.data;
       var w = newImage.width;
       var h = newImage.height;
@@ -305,6 +310,7 @@
       context.putImageData(newImage,x,y);
     }
     filters.reset = function() {
+      filters.sourceImage = new ImageData(new Uint8ClampedArray(filters.originImage.data),filters.originImage.width, filters.originImage.height);
       var context = document.getElementById('canvas').getContext('2d');
       var x = 0;
       var y = 0;
@@ -328,7 +334,8 @@
       if(filters.sourceImage == null) {
         return;
       }
-      var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
+      //var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
+      var newImage = filters.sourceImage;
       var pix = newImage.data;
       var width = newImage.width;
       var height = newImage.height;
@@ -378,7 +385,8 @@
       if(filters.sourceImage == null) {
         return;
       }
-      var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
+      //var newImage = new ImageData(new Uint8ClampedArray(filters.sourceImage.data),filters.sourceImage.width, filters.sourceImage.height);
+      var newImage = filters.sourceImage;
       var pix = newImage.data;
       var width = newImage.width;
       var height = newImage.height;
